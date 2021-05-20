@@ -11,37 +11,43 @@ import static main.SudokuBoard.MAX_SIZE;
 public class SudokuProgram {
     private final SudokuBoard board;
     private final SudokuSolver solver;
-    int[][] readiedBoard;
-    int size = 0;
-    private final int multithread;
+    private int[][] readiedBoard;
+    private int size = 0;
+    private final int threads;
 
-    SudokuProgram(int multithread, String filename) {
-        this.multithread = multithread;
-        readiedBoard = new int[MAX_SIZE][MAX_SIZE];
-        readSudoku(filename);
+    SudokuProgram(int multithreading, String filename) {
+        this.threads = multithreading;
+        readiedBoard = readSudoku(filename);
         board = new SudokuBoard(readiedBoard);
-        solver = new SudokuSolver(multithread);
+        solver = new SudokuSolver();
     }
 
     public void startProgram() {
-        System.out.println(board.toString());
-        SudokuBoard result = solver.solve(this.board);
-        System.out.println(result.toString());
+        if (threads == 0) {
+            System.out.println(board);
+            SudokuBoard result = solver.solve(this.board);
+            System.out.println(result);
+        } else {
+            System.out.println(board);
+            solver.solve_threads(this.board);
+        }
     }
 
-    private void readSudoku(String fileName) {
+    private int[][] readSudoku(String fileName) {
+        FileReader fileReader;
+        BufferedReader reader;
+        String line;
         try {
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader reader = new BufferedReader(fileReader);
-            String line;
-            int[] row;
+            fileReader = new FileReader(fileName);
+            reader = new BufferedReader(fileReader);
+            readiedBoard = new int[MAX_SIZE][MAX_SIZE];
             try {
                 while ((line = reader.readLine()) != null) {
                     line = line.replace('x', '0');
-                    // converts array of strings into array of int
-                    row = Arrays.stream(line.split(",")).mapToInt(Integer::parseInt).toArray();
                     if (this.size < MAX_SIZE) {
-                        this.readiedBoard[size++] = row;
+                        // converts array of strings into array of int
+                        this.readiedBoard[size++] = Arrays.stream(line.split(",")).
+                                mapToInt(Integer::parseInt).toArray();
                     }
                 }
             } catch (IOException e) {
@@ -60,5 +66,6 @@ public class SudokuProgram {
             System.err.format("Exception occurred while trying to close '%s'.", fileName);
             //e.printStackTrace();
         }
+        return readiedBoard;
     }
 }

@@ -169,6 +169,18 @@ public class SudokuBoard {
         return searchMissingItems(col, row_valid);
     }
 
+    public int[][] getBoard() {
+        return this.board;
+    }
+
+    public void copy_board(int[][] a) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                this.board[i][j] = a[i][j];
+            }
+        }
+    }
+
     @Override
     public String toString() {
         String s = "";
