@@ -39,8 +39,12 @@ public class Main {
             if (error){
                 print_help();
             } else {
-                program = new SudokuProgram(multithread, fileName);
-                program.startProgram();
+                try {
+                    program = new SudokuProgram(multithread, fileName);
+                    program.startProgram();
+                } catch (Exception e) {
+                    //System.err.println("");
+                }
             }
         }
     }

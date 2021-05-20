@@ -11,14 +11,11 @@ import static main.SudokuBoard.MAX_SIZE;
 public class SudokuProgram {
     private final SudokuBoard board;
     private final SudokuSolver solver;
-    private int[][] readiedBoard;
-    private int size = 0;
     private final int threads;
 
-    SudokuProgram(int multithreading, String filename) {
+    SudokuProgram(int multithreading, String filename) throws Exception {
         this.threads = multithreading;
-        readiedBoard = readSudoku(filename);
-        board = new SudokuBoard(readiedBoard);
+        board = new SudokuBoard(readSudoku(filename));
         solver = new SudokuSolver();
     }
 
@@ -36,6 +33,8 @@ public class SudokuProgram {
     private int[][] readSudoku(String fileName) {
         FileReader fileReader;
         BufferedReader reader;
+        int[][] readiedBoard;
+        int size = 0;
         String line;
         try {
             fileReader = new FileReader(fileName);
@@ -44,28 +43,28 @@ public class SudokuProgram {
             try {
                 while ((line = reader.readLine()) != null) {
                     line = line.replace('x', '0');
-                    if (this.size < MAX_SIZE) {
+                    if (size < MAX_SIZE) {
                         // converts array of strings into array of int
-                        this.readiedBoard[size++] = Arrays.stream(line.split(",")).
+                        readiedBoard[size++] = Arrays.stream(line.split(",")).
                                 mapToInt(Integer::parseInt).toArray();
                     }
                 }
             } catch (IOException e) {
                 System.err.format(
-                        "Exception occurred while trying to read line from '%s':\n %s",
-                        fileName,
-                        e.getMessage()
+                        "Exception occurred while trying to read line from '%s'",
+                        fileName
                 );
             } finally {
                 reader.close();
             }
+            return (size==MAX_SIZE)?readiedBoard:null;
         } catch (FileNotFoundException e) {
-            System.err.format("Exception occurred while trying to open '%s'.", fileName);
+            System.err.format("Exception occurred while trying to open '%s'.\n", fileName);
             //e.printStackTrace();
         } catch (IOException e) {
-            System.err.format("Exception occurred while trying to close '%s'.", fileName);
+            System.err.format("Exception occurred while trying to close '%s'.\n", fileName);
             //e.printStackTrace();
         }
-        return readiedBoard;
+        return null;
     }
 }

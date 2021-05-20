@@ -11,9 +11,14 @@ public class SudokuBoard {
     private final int[][] board;
     private final int boardSize;
 
-    public SudokuBoard(int[][] _board) {
-        this.board = _board;
-        boardSize = board.length;
+    public SudokuBoard(int[][] _board) throws Exception{
+        if (_board != null) {
+            board = _board;
+            boardSize = board.length;
+        } else{
+            throw new Exception("");
+        }
+
     }
 
     private static int[] findAllIndexOf(int[] arr, int t) {
@@ -126,7 +131,7 @@ public class SudokuBoard {
         return emptyPositions;
     }
 
-    public SudokuBoard setNumber(int x, int y, int value) {
+    public SudokuBoard setNumber(int x, int y, int value) throws Exception {
         int[][] newBoard = new int[MAX_SIZE][MAX_SIZE];
         for (int i = 0; i < board.length; i++) {
             newBoard[i] = Arrays.copyOf(board[i], board.length);
@@ -167,18 +172,6 @@ public class SudokuBoard {
         int[] block_valid = searchMissingItems(block, values);
         int[] row_valid = searchMissingItems(row, block_valid);
         return searchMissingItems(col, row_valid);
-    }
-
-    public int[][] getBoard() {
-        return this.board;
-    }
-
-    public void copy_board(int[][] a) {
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < a[i].length; j++) {
-                this.board[i][j] = a[i][j];
-            }
-        }
     }
 
     @Override

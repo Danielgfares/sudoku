@@ -14,7 +14,7 @@ public class SudokuSolver {
             thread1.start();
             thread1.join();
         } catch (InterruptedException e) {
-            System.err.println("error");
+            System.err.println("Error: cant solve sudoku board with threads");
         }
     }
 
@@ -45,7 +45,7 @@ public class SudokuSolver {
                 }
             }
         } catch (Exception e) {
-            System.err.println("error");
+            System.err.println("error invalid action: make sure sudoku puzzle has no errors ");
         }
         return null;
     }
@@ -103,7 +103,7 @@ public class SudokuSolver {
                         }
                     }
                 } catch (Exception e) {
-                    System.err.println("error");
+                    System.err.println("Error: invalid action! Make sure sudoku puzzle is legit");
                 }
             }
         }
