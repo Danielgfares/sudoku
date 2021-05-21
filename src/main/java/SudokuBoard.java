@@ -1,4 +1,4 @@
-package main;
+package main.java;
 
 
 import java.util.Arrays;
@@ -18,19 +18,25 @@ public class SudokuBoard {
         } else{
             throw new Exception("");
         }
-
     }
 
-    private static int[] findAllIndexOf(int[] arr, int t) {
-        if (arr == null) {
+    /**
+     * Finds all indexes of a value v in array of ints called a
+     * @param a array of ints
+     * @param v Integer values
+     * @return an array of indexes of the value in the entry array a
+     * if v not found return an empty array with size 0
+     */
+    private static int[] findAllIndexOf(int[] a, int v) {
+        if (a == null) {
             return new int[0];
         }
         int[] aux = new int[MAX_SIZE];
         int real_size = 0;
-        int len = arr.length;
+        int len = a.length;
         int i = 0;
         while (i < len) {
-            if (arr[i] == t) {
+            if (a[i] == v) {
                 aux[real_size++] = i;
             }
             i++;
@@ -65,8 +71,8 @@ public class SudokuBoard {
     /**
      * given a cell pos on the board
      *
-     * @param x row index
-     * @param y columns index
+     * @param x row position
+     * @param y columns position
      * @return the block of the board that corresponds the the given cell
      * @throws Exception in case of index out of bound
      */
@@ -87,10 +93,9 @@ public class SudokuBoard {
     }
 
     /**
-     * Given an valid index
-     *
-     * @param y index of column to read
-     * @return column that corresponds to the given index
+     * Given an valid column postion returns the columns that corresponds to the given position
+     * @param y position of column
+     * @return column that corresponds to the given position
      * @throws Exception in case of index out of bound
      */
     private int[] getCol(int y) throws Exception {
@@ -105,11 +110,10 @@ public class SudokuBoard {
     }
 
     /**
-     * Given an valid index
-     *
-     * @param x index of row to read
-     * @return row that corresponds to the given index
-     * @throws Exception in case of index out of bound
+     * Given an valid row position returns the row that corresponds to the given position
+     * @param x position of row
+     * @return row that corresponds to the given position
+     * @throws Exception on index out of bound
      */
     private int[] getRow(int x) throws Exception {
         if (x > 0 || x <= MAX_SIZE) {
@@ -131,6 +135,15 @@ public class SudokuBoard {
         return emptyPositions;
     }
 
+    /**
+     * Given a a values between 0 and 10
+     * copy the board and assign the new values to the board
+     * @param x row number where the cell to set the value
+     * @param y col number where the cell to set the value
+     * @param value the values to assign to the cell
+     * @return new board created from the action of assigning the value to the specified cell with x, y
+     * @throws Exception on creating the new board
+     */
     public SudokuBoard setNumber(int x, int y, int value) throws Exception {
         int[][] newBoard = new int[MAX_SIZE][MAX_SIZE];
         for (int i = 0; i < board.length; i++) {
@@ -145,12 +158,11 @@ public class SudokuBoard {
     }
 
     /**
-     * given the coordenates of a cell check if its empty then searches for all possibles values
+     * Given coordinates of a cell check if its empty then searches for all possibles values
      * and returns them to the algorithm
-     *
-     * @param x row position where the cell is found
-     * @param y column position where the cell is found
-     * @return the valid values
+     * @param x row number where the cell is found
+     * @param y column number where the cell is found
+     * @return possible values for this cell
      * @throws Exception in case of indexes out of bound
      */
     public int[] getValidOptions(int x, int y) throws Exception {

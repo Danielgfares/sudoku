@@ -1,4 +1,4 @@
-package main;
+package main.java;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,9 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static main.SudokuBoard.MAX_SIZE;
+import static main.java.SudokuBoard.MAX_SIZE;
 
 public class SudokuProgram {
+
     private final SudokuBoard board;
     private final SudokuSolver solver;
     private final int threads;
@@ -20,16 +21,31 @@ public class SudokuProgram {
     }
 
     public void startProgram() {
+        // in case of 1 thread execution
+        long start;
+        long end;
         if (threads == 0) {
             System.out.println(board);
+            // solver user backtracking algorithm to solve to board
+            start = System.currentTimeMillis();
             SudokuBoard result = solver.solve(this.board);
+            end = System.currentTimeMillis();
             System.out.println(result);
         } else {
             System.out.println(board);
+            // first thread that have a board with no empty cells prints the board and exits
+            start = System.currentTimeMillis();
             solver.solve_threads(this.board);
+            end = System.currentTimeMillis();
         }
+        System.out.println("Elapsed Time in milli seconds: "+ (end-start));
     }
 
+    /**
+     * methode to read the board from file
+     * @param fileName sudoku file
+     * @return sudoku board
+     */
     private int[][] readSudoku(String fileName) {
         FileReader fileReader;
         BufferedReader reader;
@@ -42,6 +58,7 @@ public class SudokuProgram {
             readiedBoard = new int[MAX_SIZE][MAX_SIZE];
             try {
                 while ((line = reader.readLine()) != null) {
+                    // replace every x with 0 so can fit in two dim int array
                     line = line.replace('x', '0');
                     if (size < MAX_SIZE) {
                         // converts array of strings into array of int

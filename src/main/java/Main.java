@@ -1,5 +1,4 @@
-package main;
-
+package main.java;
 
 public class Main {
 
@@ -9,13 +8,11 @@ public class Main {
         boolean error = false;
         String fileName = null;
         SudokuProgram program;
-        System.out.println(args[0] + " " + args[1] + " " + args[2]);
         if (args.length != 3) {
-            System.err.println("incorrect entry");
+            System.err.println("Incorrect entry");
             print_help();
         } else {
             int index = 0;
-
             do {
                 if (index == 0) {
                     if (!args[0].equals("-p")) {
@@ -50,7 +47,7 @@ public class Main {
     }
 
     public static void print_help() {
-        System.out.println("-p [0|1] filename");
+        System.out.println("Java –jar sudoku.jar -p [0|1] filename");
     }
 
 
