@@ -20,7 +20,7 @@ public class SudokuProgram {
         solver = new SudokuSolver();
     }
 
-    public void startProgram() {
+    public void startProgram() throws Exception {
         // in case of 1 thread execution
         long start;
         long end;

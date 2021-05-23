@@ -32,19 +32,19 @@ public class SudokuBoard {
             return new int[0];
         }
         int[] aux = new int[MAX_SIZE];
-        int real_size = 0;
+        int size = 0;
         int len = a.length;
         int i = 0;
         while (i < len) {
             if (a[i] == v) {
-                aux[real_size++] = i;
+                aux[size++] = i;
             }
             i++;
         }
-        if (real_size == 0 || real_size > MAX_SIZE) {
+        if (size == 0 || size > MAX_SIZE) {
             return new int[0];
         }
-        return Arrays.copyOf(aux, real_size);
+        return Arrays.copyOf(aux, size);
     }
 
     /**
@@ -123,16 +123,21 @@ public class SudokuBoard {
     }
 
     public int[][] getEmpty() {
-        int emptyPosSize = 0;
-        int[][] emptyPositions = new int[MAX_SIZE][MAX_SIZE];
-        int[] row;
-        int[] indexes;
+        int[][] emptyPositions = new int[MAX_SIZE*MAX_SIZE][2];
+        int[] columns;
+        int size = 0;
+        // for every row
         for (int i = 0; i < MAX_SIZE; i++) {
-            row = board[i];
-            indexes = findAllIndexOf(row, 0);
-            emptyPositions[i] = indexes;
+            // get the empty columns in this row
+            columns = findAllIndexOf(board[i], 0);
+            // put pair of row, column
+            for (int j = 0; j < columns.length; j++) {
+                emptyPositions[size][0] = i;
+                emptyPositions[size][1] = columns[j];
+                size++;
+            }
         }
-        return emptyPositions;
+        return Arrays.copyOf(emptyPositions, size);
     }
 
     /**

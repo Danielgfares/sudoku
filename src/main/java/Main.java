@@ -40,7 +40,7 @@ public class Main {
                     program = new SudokuProgram(multithread, fileName);
                     program.startProgram();
                 } catch (Exception e) {
-                    //System.err.println("");
+                    print_help();
                 }
             }
         }
