@@ -19,7 +19,7 @@ public class SudokuBoard {
             board = _board;
             boardSize = board.length;
         } else {
-            throw new IOException("An error occurred, please check the file is the correct one");
+            throw new IOException("An error occurred: please check the file is the correct one");
         }
     }
 
@@ -31,7 +31,7 @@ public class SudokuBoard {
      * @return an array of indexes of the value in the entry array a
      * if v not found return an empty array with size 0
      */
-    private static int[] findAllIndexOf(int[] a, int v) {
+    private int[] findAllIndexOf(int[] a, int v) {
         if (a == null) {
             return new int[0];
         }
@@ -93,7 +93,7 @@ public class SudokuBoard {
             }
             return block;
         }
-        throw new Exception("An error occurred: the cell int position " + "{" + x + "," + y + "}" + " do not exist");
+        throw new Exception("An error occurred: cell not found at position " + "{" + x + "," + y + "}");
     }
 
     /**
@@ -111,7 +111,7 @@ public class SudokuBoard {
             }
             return column;
         }
-        throw new Exception("An error occurred: column index" + y + "is incorrect.");
+        throw new Exception("An error occurred, column index " + y + " is incorrect.");
     }
 
     /**
@@ -125,7 +125,7 @@ public class SudokuBoard {
         if (x > 0 || x <= MAX_SIZE) {
             return Arrays.copyOf(board[x - 1], board[x - 1].length);
         }
-        throw new Exception("An error occurred: row index" + x + "is incorrect.");
+        throw new Exception("An error occurred: row index " + x + " is incorrect.");
     }
 
     public int[][] getEmpty() throws Exception {
@@ -139,19 +139,15 @@ public class SudokuBoard {
             // get the empty columns in this row
             columns = findAllIndexOf(board[i], 0);
 
-            try {
-                row = getRow(i+1);
-                // sort
-                Arrays.sort(row);
-                // search for missing values
-                row_valid = searchMissingItems(row, values);
+            row = getRow(i + 1);
+            // sort
+            Arrays.sort(row);
+            // search for missing values
+            row_valid = searchMissingItems(row, values);
 
-                if (columns.length != row_valid.length) {
-                    throw new Exception(String.format("An error occurred: sudoku board contain an error on row %d \n" +
-                            "Please check the board does not contain this type of error and try again.", i+1));
-                }
-            } catch (Exception e) {
-                throw new Exception(e.getMessage());
+            if (columns.length != row_valid.length) {
+                throw new Exception(String.format("An error occurred: sudoku board contain an error on row %d \n" +
+                        "Please check the board does not contain this type of error and try again.", i + 1));
             }
 
             // put pair of row, column
@@ -183,7 +179,7 @@ public class SudokuBoard {
             newBoard[x - 1][y - 1] = value;
             return new SudokuBoard(newBoard);
         } else {
-            return null;
+            throw new Exception("An error occurred: invalid value");
         }
     }
 

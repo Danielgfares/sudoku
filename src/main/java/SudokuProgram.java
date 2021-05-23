@@ -14,32 +14,22 @@ public class SudokuProgram {
     private final SudokuSolver solver;
     private final int threads;
 
-    SudokuProgram(int multithreading, String filename) throws IOException {
-        this.threads = multithreading;
-        board = new SudokuBoard(readSudoku(filename));
-        solver = new SudokuSolver();
+    SudokuProgram(int _threads, String filename) throws IOException {
+        this.threads = _threads;
+        this.board = new SudokuBoard(readSudoku(filename));
+        this.solver = new SudokuSolver();
     }
 
-
+    /**
+     * start solver
+     *
+     * @throws Exception if couldn't solve sudoku board
+     */
     public void startProgram() throws Exception {
-        // in case of 1 thread execution
-        long start;
-        long end;
-        if (threads == 0) {
-            System.out.println(board);
-            // solver user backtracking algorithm to solve to board
-            start = System.currentTimeMillis();
-            SudokuBoard result = solver.solve(this.board);
-            end = System.currentTimeMillis();
-            System.out.println(result);
-        } else {
-            System.out.println(board);
-            // when a thread arrives to a board with no empty cells prints the board and exits
-            start = System.currentTimeMillis();
-            solver.solve_threads(this.board);
-            end = System.currentTimeMillis();
-        }
-        System.out.println("Elapsed Time in milli seconds: " + (end - start));
+        SudokuBoard result;
+        System.out.println(this.board);
+        result = solver.solve(this.board, this.threads);
+        System.out.println(result);
     }
 
     /**
@@ -71,9 +61,9 @@ public class SudokuProgram {
                                 mapToInt(Integer::parseInt).toArray();
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.format(
-                        "Exception occurred while trying to read line from '%s'",
+                        "Exception occurred while trying to read line from '%s'\n",
                         fileName
                 );
             } finally {

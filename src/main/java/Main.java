@@ -41,14 +41,13 @@ public class Main {
                     program.startProgram();
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
-                    print_help();
                 }
             }
         }
     }
 
     public static void print_help() {
-        System.out.println("Java –jar sudoku.jar -p [0|1] filename");
+        System.out.println("Please try: \nJava –jar sudoku.jar -p [0|1] filename");
     }
 }
 
