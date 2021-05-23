@@ -1,6 +1,7 @@
 package main.java;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class SudokuSolver {
@@ -15,7 +16,7 @@ public class SudokuSolver {
      *
      * @param board board to solve
      */
-    public void solve_threads(SudokuBoard board) {
+    public void solve_threads(SudokuBoard board) throws Exception {
         ThreadBoardSudoku thread1;
         thread1 = new ThreadBoardSudoku(board, board.getEmpty());
         thread1.start();
@@ -32,7 +33,7 @@ public class SudokuSolver {
      */
     public SudokuBoard solve(SudokuBoard board) throws Exception {
         if (board == null) {
-            throw new Exception("Error");
+            throw new Exception("An error occurred, please check the file is the correct one");
         }
         return recSolve(board, board.getEmpty());
     }

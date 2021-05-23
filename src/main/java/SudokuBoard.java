@@ -11,6 +11,8 @@ public class SudokuBoard {
     public static int MIN = 1;
     private final int[][] board;
     private final int boardSize;
+    // all possibles valuse
+    private final int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     public SudokuBoard(int[][] _board) throws IOException {
         if (_board != null) {
@@ -126,18 +128,36 @@ public class SudokuBoard {
         throw new Exception("An error occurred: row index" + x + "is incorrect.");
     }
 
-    public int[][] getEmpty() {
+    public int[][] getEmpty() throws Exception {
         int[][] emptyPositions = new int[MAX_SIZE * MAX_SIZE][2];
         int[] columns;
         int size = 0;
+        int[] row;
+        int[] row_valid;
         // for every row
         for (int i = 0; i < MAX_SIZE; i++) {
             // get the empty columns in this row
             columns = findAllIndexOf(board[i], 0);
+
+            try {
+                row = getRow(i+1);
+                // sort
+                Arrays.sort(row);
+                // search for missing values
+                row_valid = searchMissingItems(row, values);
+
+                if (columns.length != row_valid.length) {
+                    throw new Exception(String.format("An error occurred: sudoku board contain an error on row %d \n" +
+                            "Please check the board does not contain this type of error and try again.", i+1));
+                }
+            } catch (Exception e) {
+                throw new Exception(e.getMessage());
+            }
+
             // put pair of row, column
-            for (int j = 0; j < columns.length; j++) {
+            for (int column : columns) {
                 emptyPositions[size][0] = i;
-                emptyPositions[size][1] = columns[j];
+                emptyPositions[size][1] = column;
                 size++;
             }
         }
@@ -180,8 +200,6 @@ public class SudokuBoard {
         if (board[x - 1][y - 1] > 0) {
             return null;
         }
-        // all posibles valuse
-        int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         // get the list of values in row, column and block  of the given cell
         int[] block = getBlock(x, y);
         int[] row = getRow(x);
