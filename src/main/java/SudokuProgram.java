@@ -14,11 +14,12 @@ public class SudokuProgram {
     private final SudokuSolver solver;
     private final int threads;
 
-    SudokuProgram(int multithreading, String filename) throws Exception {
+    SudokuProgram(int multithreading, String filename) throws IOException {
         this.threads = multithreading;
         board = new SudokuBoard(readSudoku(filename));
         solver = new SudokuSolver();
     }
+
 
     public void startProgram() throws Exception {
         // in case of 1 thread execution
@@ -33,20 +34,24 @@ public class SudokuProgram {
             System.out.println(result);
         } else {
             System.out.println(board);
-            // first thread that have a board with no empty cells prints the board and exits
+            // when a thread arrives to a board with no empty cells prints the board and exits
             start = System.currentTimeMillis();
             solver.solve_threads(this.board);
             end = System.currentTimeMillis();
         }
-        System.out.println("Elapsed Time in milli seconds: "+ (end-start));
+        System.out.println("Elapsed Time in milli seconds: " + (end - start));
     }
 
     /**
-     * methode to read the board from file
+     * Read board from file
+     *
      * @param fileName sudoku file
      * @return sudoku board
      */
-    private int[][] readSudoku(String fileName) {
+    private int[][] readSudoku(String fileName) throws IOException {
+        if (fileName == null || fileName.isEmpty()) {
+            return null;
+        }
         FileReader fileReader;
         BufferedReader reader;
         int[][] readiedBoard;
@@ -74,14 +79,11 @@ public class SudokuProgram {
             } finally {
                 reader.close();
             }
-            return (size==MAX_SIZE)?readiedBoard:null;
+            return (size == MAX_SIZE) ? readiedBoard : null;
         } catch (FileNotFoundException e) {
-            System.err.format("Exception occurred while trying to open '%s'.\n", fileName);
-            //e.printStackTrace();
+            throw new IOException(String.format("Exception occurred while trying to open '%s'.\n", fileName));
         } catch (IOException e) {
-            System.err.format("Exception occurred while trying to close '%s'.\n", fileName);
-            //e.printStackTrace();
+            throw new IOException(String.format("Exception occurred while trying to close '%s'.\n", fileName));
         }
-        return null;
     }
 }

@@ -15,7 +15,7 @@ public class SudokuSolver {
      *
      * @param board board to solve
      */
-    public void solve_threads(SudokuBoard board) throws InterruptedException {
+    public void solve_threads(SudokuBoard board) {
         ThreadBoardSudoku thread1;
         thread1 = new ThreadBoardSudoku(board, board.getEmpty());
         thread1.start();
@@ -72,7 +72,10 @@ public class SudokuSolver {
                 for (int value : valid) {
                     // create new board by setting the value to this cell
                     // recursive call
-                    ret = recSolve(board.setNumber(x + 1, y + 1, value), Arrays.copyOfRange(empty, 1, empty.length));
+                    ret = recSolve(
+                            board.setNumber(x + 1, y + 1, value),
+                            Arrays.copyOfRange(empty, 1, empty.length)
+                    );
                     // ret not null mean that a solution where found and ret is the final board
                     if (ret != null) {
                         // so return ret
@@ -81,7 +84,7 @@ public class SudokuSolver {
                 }
             }
         } catch (Exception e) {
-            System.err.println("error invalid action: make sure sudoku puzzle has no errors ");
+            System.err.println("Error invalid action: make sure sudoku puzzle has no errors!");
         }
         return null;
     }
@@ -123,7 +126,6 @@ public class SudokuSolver {
                             );
                             threadList[i].start();
                         }
-                        // since none of this threads is daemon thread then no need to join
                         // wait for the child thread to finish
                         /*
                         for (ThreadBoardSudoku threadBoardSudoku : threadList) {
@@ -132,7 +134,7 @@ public class SudokuSolver {
                         */
                     }
                 } catch (Exception e) {
-                    System.err.println("Error: invalid action! Make sure sudoku puzzle is legit");
+                    System.err.println("Error invalid action: Make sure sudoku puzzle is legit!");
                 }
             }
         }

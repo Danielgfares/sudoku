@@ -18,7 +18,7 @@ public class Main {
                     if (!args[0].equals("-p")) {
                         error = true;
                     }
-                } else if ( index == 1) {
+                } else if (index == 1) {
                     try {
                         multithread = Integer.parseInt(args[1]);
                         if (multithread != 0 && multithread != 1) {
@@ -28,18 +28,19 @@ public class Main {
                         System.err.println("Option -p: incorrect entry");
                         error = true;
                     }
-                } else if ( index == 2 ) {
+                } else if (index == 2) {
                     fileName = args[2];
                 }
                 index++;
             } while (!error && index < args.length);
-            if (error){
+            if (error) {
                 print_help();
             } else {
                 try {
                     program = new SudokuProgram(multithread, fileName);
                     program.startProgram();
                 } catch (Exception e) {
+                    System.err.println(e.getMessage());
                     print_help();
                 }
             }
@@ -49,8 +50,5 @@ public class Main {
     public static void print_help() {
         System.out.println("Java –jar sudoku.jar -p [0|1] filename");
     }
-
-
-
 }
 

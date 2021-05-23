@@ -1,6 +1,7 @@
 package main.java;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class SudokuBoard {
@@ -11,17 +12,18 @@ public class SudokuBoard {
     private final int[][] board;
     private final int boardSize;
 
-    public SudokuBoard(int[][] _board) throws Exception{
+    public SudokuBoard(int[][] _board) throws IOException {
         if (_board != null) {
             board = _board;
             boardSize = board.length;
-        } else{
-            throw new Exception("");
+        } else {
+            throw new IOException("An error occurred, please check the file is the correct one");
         }
     }
 
     /**
      * Finds all indexes of a value v in array of ints called a
+     *
      * @param a array of ints
      * @param v Integer values
      * @return an array of indexes of the value in the entry array a
@@ -69,7 +71,7 @@ public class SudokuBoard {
     }
 
     /**
-     * given a cell pos on the board
+     * Given a cell position on the board
      *
      * @param x row position
      * @param y columns position
@@ -89,11 +91,12 @@ public class SudokuBoard {
             }
             return block;
         }
-        throw new Exception("Error: indexes of the cell given out of bound");
+        throw new Exception("An error occurred: the cell int position " + "{" + x + "," + y + "}" + " do not exist");
     }
 
     /**
-     * Given an valid column postion returns the columns that corresponds to the given position
+     * Given a valid column position returns the columns that correspond to the given position
+     *
      * @param y position of column
      * @return column that corresponds to the given position
      * @throws Exception in case of index out of bound
@@ -106,11 +109,12 @@ public class SudokuBoard {
             }
             return column;
         }
-        throw new Exception("Error: column index out of bound");
+        throw new Exception("An error occurred: column index" + y + "is incorrect.");
     }
 
     /**
-     * Given an valid row position returns the row that corresponds to the given position
+     * Given a valid row position returns the row that corresponds to the given position
+     *
      * @param x position of row
      * @return row that corresponds to the given position
      * @throws Exception on index out of bound
@@ -119,11 +123,11 @@ public class SudokuBoard {
         if (x > 0 || x <= MAX_SIZE) {
             return Arrays.copyOf(board[x - 1], board[x - 1].length);
         }
-        throw new Exception("Error: row index out of bound");
+        throw new Exception("An error occurred: row index" + x + "is incorrect.");
     }
 
     public int[][] getEmpty() {
-        int[][] emptyPositions = new int[MAX_SIZE*MAX_SIZE][2];
+        int[][] emptyPositions = new int[MAX_SIZE * MAX_SIZE][2];
         int[] columns;
         int size = 0;
         // for every row
@@ -141,10 +145,11 @@ public class SudokuBoard {
     }
 
     /**
-     * Given a a values between 0 and 10
-     * copy the board and assign the new values to the board
-     * @param x row number where the cell to set the value
-     * @param y col number where the cell to set the value
+     * Given a value between 0 and 10 but not 0 and 10
+     * copy the board and assign the new value to the board
+     *
+     * @param x     row number where the cell to set the value
+     * @param y     col number where the cell to set the value
      * @param value the values to assign to the cell
      * @return new board created from the action of assigning the value to the specified cell with x, y
      * @throws Exception on creating the new board
@@ -163,8 +168,8 @@ public class SudokuBoard {
     }
 
     /**
-     * Given coordinates of a cell check if its empty then searches for all possibles values
-     * and returns them to the algorithm
+     * Given the position of a cell check if it's empty, then searches for all possible values
+     *
      * @param x row number where the cell is found
      * @param y column number where the cell is found
      * @return possible values for this cell
